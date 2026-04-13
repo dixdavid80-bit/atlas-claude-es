@@ -6,6 +6,7 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
+  site: 'https://atlas-claude-es.vercel.app',
   integrations: [starlight({
 			title: 'Atlas Claude ES',
 			description: 'La referencia completa del ecosistema Claude en español',
