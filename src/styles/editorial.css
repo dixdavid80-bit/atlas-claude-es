@@ -1,42 +1,65 @@
 /* ===================================
    ATLAS CLAUDE ES — Editorial Theme
-   Starlight CSS overrides
+   Paleta: warm neutrals + ámbar
+   Contraste verificado light + dark
    =================================== */
 
-/* ===== Paleta editorial: warm neutrals + ámbar ===== */
+/* ===== LIGHT MODE ===== */
 
 :root {
   --sl-font: 'Source Sans 3', Georgia, serif;
   --sl-font-system-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
+  /* Accent ámbar */
   --sl-color-accent-low: #fef3c7;
-  --sl-color-accent: #d97706;
-  --sl-color-accent-high: #92400e;
+  --sl-color-accent: #b45309;
+  --sl-color-accent-high: #78350f;
+
+  /* Grays — light mode: fondo claro, texto oscuro */
   --sl-color-white: #fafaf9;
-  --sl-color-gray-1: #e7e5e4;
-  --sl-color-gray-2: #d6d3d1;
+  --sl-color-gray-1: #f5f5f4;
+  --sl-color-gray-2: #e7e5e4;
   --sl-color-gray-3: #a8a29e;
-  --sl-color-gray-4: #78716c;
-  --sl-color-gray-5: #44403c;
-  --sl-color-gray-6: #292524;
-  --sl-color-black: #1c1917;
+  --sl-color-gray-4: #57534e;
+  --sl-color-gray-5: #292524;
+  --sl-color-gray-6: #1c1917;
+  --sl-color-black: #0c0a09;
+
+  /* Custom para textos secundarios con buen contraste */
+  --atlas-text-secondary: #57534e;
+  --atlas-text-muted: #78716c;
+  --atlas-card-bg: #ffffff;
+  --atlas-card-border: #e7e5e4;
+  --atlas-card-text: #44403c;
 }
 
+/* ===== DARK MODE ===== */
+
 :root[data-theme='dark'] {
+  /* Accent ámbar — más brillante en dark */
   --sl-color-accent-low: #451a03;
   --sl-color-accent: #f59e0b;
   --sl-color-accent-high: #fde68a;
+
+  /* Grays — dark mode: fondo oscuro, texto claro */
   --sl-color-white: #1c1917;
   --sl-color-gray-1: #292524;
-  --sl-color-gray-2: #44403c;
-  --sl-color-gray-3: #78716c;
-  --sl-color-gray-4: #a8a29e;
+  --sl-color-gray-2: #3d3836;
+  --sl-color-gray-3: #6b6560;
+  --sl-color-gray-4: #b8b2ac;
   --sl-color-gray-5: #d6d3d1;
-  --sl-color-gray-6: #e7e5e4;
+  --sl-color-gray-6: #f5f5f4;
   --sl-color-black: #fafaf9;
+
+  /* Custom dark — textos legibles */
+  --atlas-text-secondary: #d6d3d1;
+  --atlas-text-muted: #a8a29e;
+  --atlas-card-bg: #292524;
+  --atlas-card-border: #3d3836;
+  --atlas-card-text: #d6d3d1;
 }
 
-/* ===== Tipografía editorial: serif para títulos ===== */
+/* ===== Tipografía editorial ===== */
 
 h1, h2, h3,
 .sl-markdown-content h1,
@@ -45,6 +68,7 @@ h1, h2, h3,
   font-family: 'Libre Baskerville', Georgia, serif !important;
   font-weight: 700;
   letter-spacing: -0.01em;
+  color: var(--sl-color-black);
 }
 
 .sl-markdown-content h1 {
@@ -68,10 +92,11 @@ h1, h2, h3,
   margin-top: 2rem;
 }
 
-/* Body: mejor legibilidad */
+/* Body */
 .sl-markdown-content {
   font-size: 1.05rem;
   line-height: 1.75;
+  color: var(--sl-color-gray-5);
 }
 
 .sl-markdown-content p {
@@ -79,7 +104,7 @@ h1, h2, h3,
   max-width: 75ch;
 }
 
-/* Links con acento ámbar */
+/* Links */
 .sl-markdown-content a:not(.sl-link-card) {
   color: var(--sl-color-accent);
   text-decoration: underline;
@@ -100,36 +125,37 @@ h1, h2, h3,
 
 .sl-markdown-content code:not(pre code) {
   background: var(--sl-color-gray-1);
+  color: var(--sl-color-gray-5);
   padding: 0.15rem 0.4rem;
   border-radius: 4px;
   font-size: 0.88em;
 }
 
-/* Tablas — header con acento */
+/* Tablas */
 .sl-markdown-content th {
   font-weight: 600;
   text-align: left;
   padding: 0.75rem 1rem;
   border-bottom: 2px solid var(--sl-color-accent);
+  color: var(--sl-color-black);
 }
 
 .sl-markdown-content td {
   padding: 0.6rem 1rem;
-  border-bottom: 1px solid var(--sl-color-gray-1);
+  border-bottom: 1px solid var(--sl-color-gray-2);
+  color: var(--sl-color-gray-5);
 }
 
 .sl-markdown-content tr:hover td {
   background: var(--sl-color-accent-low);
 }
 
-/* ===== Hero de splash ===== */
-
+/* Hero */
 [data-page-title] {
   font-family: 'Libre Baskerville', Georgia, serif !important;
 }
 
-/* ===== Cards con hover ámbar ===== */
-
+/* Starlight Cards */
 .card {
   transition: all 0.2s ease;
 }
@@ -140,34 +166,29 @@ h1, h2, h3,
   transform: translateY(-2px);
 }
 
-/* ===== Admonitions ===== */
-
+/* Admonitions */
 .starlight-aside--tip {
   border-left-color: var(--sl-color-accent) !important;
 }
 
-/* ===== Sidebar — current page con acento ===== */
-
+/* Sidebar current */
 nav[aria-label="Main"] a[aria-current="page"] {
   font-weight: 600;
   color: var(--sl-color-accent) !important;
 }
 
-/* ===== Selection color ===== */
-
+/* Selection */
 ::selection {
   background: var(--sl-color-accent-low);
   color: var(--sl-color-accent-high);
 }
 
-/* ===== Smooth scroll ===== */
-
+/* Smooth scroll */
 html {
   scroll-behavior: smooth;
 }
 
-/* ===== Separador sutil en h2 ===== */
-
+/* Separador h2 */
 .sl-markdown-content h2::after {
   content: '';
   display: block;
@@ -178,13 +199,13 @@ html {
   border-radius: 1px;
 }
 
-/* ===== Strong con color ===== */
-
+/* Strong */
 .sl-markdown-content strong {
-  color: var(--sl-color-gray-6);
+  color: var(--sl-color-black);
   font-weight: 600;
 }
 
-:root[data-theme='dark'] .sl-markdown-content strong {
-  color: var(--sl-color-gray-6);
+/* Listas */
+.sl-markdown-content li {
+  color: var(--sl-color-gray-5);
 }
