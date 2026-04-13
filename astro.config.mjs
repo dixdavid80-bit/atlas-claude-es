@@ -7,9 +7,9 @@ export default defineConfig({
 		starlight({
 			title: 'Atlas Claude ES',
 			description: 'La referencia completa del ecosistema Claude en español',
-			defaultLocale: 'es',
+			defaultLocale: 'root',
 			locales: {
-				es: { label: 'Español', lang: 'es' },
+				root: { label: 'Español', lang: 'es' },
 			},
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/dixdavid80-bit/atlas-claude-es' },
