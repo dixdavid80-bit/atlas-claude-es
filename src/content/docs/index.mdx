@@ -3,7 +3,7 @@ title: Atlas Claude en Español
 description: La referencia completa del ecosistema Claude — desde tu primer proyecto hasta producción.
 template: splash
 hero:
-  tagline: Aprende, configura y domina Claude Code paso a paso. En español, con criterio y sin relleno.
+  tagline: Aprende, configura y domina el ecosistema Claude paso a paso. Con criterio, con opinión, sin relleno.
   actions:
     - text: Empezar ahora
       link: /empezar/bienvenido/
@@ -14,28 +14,44 @@ hero:
       icon: external
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import PathCard from '../../components/PathCard';
 
 ## Elige tu camino
 
-<CardGrid>
-  <Card title="Empiezo desde cero" icon="rocket">
-    Instala Claude Code, configura tu primer proyecto y entiende cómo funciona todo.
-    [Empezar →](/empezar/bienvenido/)
-  </Card>
-  <Card title="Quiero automatizar" icon="setting">
-    Hooks que garantizan ejecución, skills que encapsulan workflows, MCP que conecta con el mundo.
-    [Automatizar →](/automatizar/hooks/)
-  </Card>
-  <Card title="Quiero escalar" icon="rocket">
-    Agentes paralelos, modelos optimizados, patrones multi-agente que funcionan.
-    [Escalar →](/escalar/agentes/)
-  </Card>
-  <Card title="Voy a producción" icon="laptop">
-    API, Agent SDK, Managed Agents — de prototipo a deploy real.
-    [Producción →](/produccion/api-agent-sdk/)
-  </Card>
-</CardGrid>
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', margin: '2rem 0' }}>
+  <PathCard
+    client:load
+    title="Empiezo desde cero"
+    description="Instala Claude Code, configura tu primer proyecto y entiende cómo funciona todo el ecosistema."
+    href="/empezar/bienvenido/"
+    icon="book"
+    accent="#d97706"
+  />
+  <PathCard
+    client:load
+    title="Quiero automatizar"
+    description="Hooks que garantizan ejecución, skills que encapsulan workflows, MCP que conecta con el mundo."
+    href="/automatizar/hooks/"
+    icon="wrench"
+    accent="#059669"
+  />
+  <PathCard
+    client:load
+    title="Quiero escalar"
+    description="Agentes paralelos, modelos optimizados, patrones multi-agente que funcionan en producción."
+    href="/escalar/agentes/"
+    icon="layers"
+    accent="#7c3aed"
+  />
+  <PathCard
+    client:load
+    title="Voy a producción"
+    description="API, Agent SDK, Managed Agents — de prototipo a deploy real con infraestructura gestionada."
+    href="/produccion/api-agent-sdk/"
+    icon="rocket"
+    accent="#dc2626"
+  />
+</div>
 
 ## Por qué existe esto
 
