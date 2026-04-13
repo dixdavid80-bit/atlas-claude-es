@@ -52,6 +52,8 @@ Para fijar versión: nombre completo (`claude-opus-4-6`) o env var `ANTHROPIC_DE
 
 ## Pricing real — lo que de verdad cuesta
 
+*(Precios verificados abril 2026 — consulta [anthropic.com/pricing](https://anthropic.com/pricing) para datos actualizados)*
+
 ### Precio por millón de tokens (API)
 
 | Modelo | Input | Output | Cache reads | Cache writes |
@@ -285,16 +287,9 @@ Es el patrón que Sentry+Seer materializó como producto, ahora reproducible con
 
 ## Auto Mode — permisos sin fricción
 
-Sin Auto Mode, Claude pide permiso para cada acción sensible — rompe workflows largos. Auto Mode usa clasificador AI de 2 etapas:
+Sin Auto Mode, Claude pide permiso para cada acción sensible — rompe workflows largos y harness engineering. **Coste extra:** 64-4.096 tokens por decisión — marginal comparado con la autonomía que desbloquea.
 
-1. **Etapa 1 (64 tokens):** decisión inmediata sí/no. Deja pasar lo claramente seguro
-2. **Etapa 2 (4.096 tokens):** solo si la 1 bloquea. Razonamiento completo antes del veredicto
-
-**Patrones bloqueados automáticamente:** intérpretes (python, node), ejecutores de paquetes (npx, npm run), shells (bash, ssh), eval/exec/sudo, herramientas de red (curl, wget), CLIs cloud, operaciones git destructivas.
-
-**Coste:** 64-4.096 tokens extra por decisión — **marginal** comparado con la autonomía que desbloquea.
-
-Activar: `claude --enable-auto-mode` o Shift+Tab → seleccionar auto.
+Para el detalle completo del clasificador (pipeline de 2 etapas, patrones bloqueados, cómo activarlo), ver [Tu primer proyecto → Auto Mode en detalle](/empezar/primer-proyecto/#auto-mode-en-detalle).
 
 :::tip[Cuándo activar Auto Mode]
 Para harness engineering, sesiones `/loop`, CI/CD pipelines, y cualquier trabajo donde vas a dejar a Claude trabajar solo más de 15 minutos. No tiene sentido para sesiones interactivas cortas donde tú supervisas cada paso.

@@ -265,6 +265,21 @@ Con `defer_loading`, las tools no se cargan hasta que se buscan. Soporta hasta 1
 Tool Search e Input Examples son **mutuamente excluyentes**. El resto son compatibles entre sí.
 :::
 
+## Errores comunes y trampas
+
+| Error | Por qué pasa | Solución |
+|---|---|---|
+| **`bypassPermissions` en producción** | Lo pruebas en dev y se te olvida quitarlo. Tu agente puede ejecutar `rm -rf /` si Claude lo decide | Siempre `permission_mode="allowlist"` en producción. Whitelist explícita de tools |
+| **Agente que no para** | Sin `max_tokens` o `stopWhen`, Claude puede iterar indefinidamente. Un loop de tool calls sin exit condition quema tokens y dinero | Configura siempre `max_tokens` + un hard timeout client-side. El SDK no tiene timeout nativo |
+| **Tool que devuelve HTML crudo** | Tu tool wrappea una API que devuelve HTML. Claude recibe miles de tokens de basura y se confunde | Limpia el output en la tool antes de devolverlo. JSON > texto > markdown > HTML. Nunca HTML crudo |
+| **Error 529 en cascada** | Tu agente hace 3 calls paralelas y las 3 reciben `overloaded_error`. El retry automático del SDK dispara 3 retries simultáneos → peor | Implementa exponential backoff con jitter. El SDK no lo hace por ti |
+| **`ResultMessage` ignorado** | No capturas `total_cost_usd` del `ResultMessage`. Tu agente corre días sin que sepas cuánto gasta | Siempre procesa `ResultMessage` y logea coste. Pon alertas si supera un umbral |
+| **Advisor llamado para todo** | Configurar Advisor sin guidance → el executor lo consulta para operaciones triviales (listar archivos). Multiplica coste sin valor | Usa el system prompt recomendado: solo llamar al advisor ANTES de trabajo sustantivo, no para orientación |
+
+:::tip[La regla de oro del Agent SDK]
+Si tu agente hace algo que no harías en Claude Code CLI, algo está mal. El SDK no añade capacidades — añade automatización. La lógica de negocio va en tus tools, no en el prompt.
+:::
+
 ## Vercel AI SDK v5 — para TypeScript
 
 Framework TypeScript para apps AI con soporte Claude vía `@ai-sdk/anthropic`:

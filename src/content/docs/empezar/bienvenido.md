@@ -77,10 +77,12 @@ Lo instalas, lo apuntas a tu proyecto, y trabaja contigo. No necesitas copiar y 
 
 | Categoría | Cantidad | Ejemplos |
 |---|---|---|
-| **Herramientas built-in** | 45 en 9 categorías | Read, Write, Edit, Bash, Grep, Glob, WebSearch, Agent, CronCreate... |
-| **Agentes built-in** | 6 tipos | General-purpose, Explore (Haiku), Plan, Verification, Claude Code Guide, Status Line Setup |
-| **Comandos de barra** | ~100 | `/model`, `/compact`, `/loop`, `/btw`, `/ultraplan`, `/powerup`, `/review`... |
-| **Skills built-in** | 17 | `/simplify`, `/batch`, `/loop`, `/schedule`, `/claude-api`, `/insights`... |
+| **Herramientas built-in** | ~45 en 9 categorías | Read, Write, Edit, Bash, Grep, Glob, WebSearch, Agent, CronCreate... |
+| **Agentes built-in** | 6+ tipos | General-purpose, Explore (Haiku), Plan, Verification, Claude Code Guide, Status Line Setup |
+| **Comandos de barra** | ~100+ | `/model`, `/compact`, `/loop`, `/btw`, `/ultraplan`, `/powerup`, `/review`... |
+| **Skills built-in** | ~17 | `/simplify`, `/batch`, `/loop`, `/schedule`, `/claude-api`, `/insights`... |
+
+*(Cantidades aproximadas — se actualizan con cada release de Claude Code)*
 
 ### Estructura de proyecto de Claude Code
 
@@ -119,6 +121,8 @@ Solo macOS, rate limits agresivos en plan Max, research preview. Windows confirm
 :::
 
 ## Planes disponibles
+
+*(Precios verificados abril 2026 — pueden cambiar)*
 
 | Plan | Precio aprox. | Lo relevante para Claude Code |
 |---|---|---|

@@ -214,11 +214,23 @@ MCP de Postgres/MySQL expone el schema y permite queries de solo lectura. Claude
 
 **Caso de uso:** estás debuggeando un bug que depende de datos. En vez de escribir queries a mano, le dices a Claude *"busca los usuarios que se registraron ayer y no completaron el onboarding"* y Claude consulta la BD directamente.
 
+:::caution[Gotchas de BD]
+- **Claude no optimiza queries por defecto.** Si tu tabla tiene 10M filas y le pides "busca todos los usuarios activos", hará un `SELECT *` sin `LIMIT`. Añade en tu CLAUDE.md: *"Siempre samplea tablas grandes (LIMIT 1000) salvo que pida explícitamente todo."*
+- **El MCP de Postgres es solo lectura**, pero si usas uno custom o el de SQLite, Claude puede hacer `DROP TABLE` si se lo pides. Verifica los permisos de tu connection string.
+- **Schemas complejos consumen contexto.** Una BD con 200 tablas inyecta miles de tokens solo en definiciones. Considera crear un MCP que exponga solo las tablas que necesitas.
+:::
+
 ### Patrón 2: API wrapper
 
 Un MCP server wrappea una API REST (GitHub, Jira, Slack). Expone operaciones como tools con parámetros tipados. Claude decide cuándo invocar cada operación.
 
 **Caso de uso:** le dices a Claude *"crea un PR con estos cambios y asígnalo a María"* y Claude usa las tools de GitHub para crear el PR, añadir reviewers y etiquetar.
+
+:::caution[Gotchas de API wrappers]
+- **Rate limits son tu problema, no del MCP.** Claude no sabe cuántas calls le quedan. Si le pides "procesa todos los issues abiertos" en un repo con 500 issues, puede quemar tu rate limit de GitHub en 2 minutos. Pon guardrails en el MCP o en los hooks.
+- **OAuth tokens expiran mid-sesión.** Si tu sesión dura horas y el token del MCP expira, Claude verá errores 401 y no sabrá reconectarse automáticamente. Solución: usa `McpAuthTool` o tokens de larga duración.
+- **Cada tool del MCP consume tokens de definición.** El MCP de GitHub expone ~35 tools. Si solo necesitas crear PRs e issues, desactiva el resto con `disabledMcpServerTools`.
+:::
 
 ### Patrón 3: Filesystem extendido
 
@@ -226,11 +238,23 @@ MCPs que dan acceso a Google Drive, S3, Notion. Claude puede leer documentos y u
 
 **Caso de uso:** tienes las specs del proyecto en Google Drive. En vez de copiarlas al chat, Claude las lee directamente con el MCP de Drive y trabaja con ellas como contexto.
 
+:::caution[Gotchas de filesystem]
+- **Los archivos grandes van al contexto completo.** Claude lee el documento entero — si son 50 páginas de specs, consume ~30K tokens de golpe. Preferible segmentar o pedir que lea solo secciones específicas.
+- **Google Drive necesita OAuth real.** No basta con un API key — necesitas OAuth 2.0 con consent screen. El setup inicial es más complejo que GitHub o Postgres.
+- **Notion tiene límites de bloques.** El MCP de Notion puede devolver bloques truncados en páginas largas. Verifica que la información crítica llega completa.
+:::
+
 ### Patrón 4: DevOps automation
 
 MCPs para Docker, Kubernetes, AWS. Claude inspecciona estado de infraestructura y ejecuta operaciones.
 
 **Caso de uso:** *"revisa los logs del container de producción de las últimas 2 horas y busca errores 500"*. Claude consulta los logs directamente sin que copies y pegues.
+
+:::danger[Gotchas de DevOps — cuidado especial]
+- **MCP de Docker/K8s con permisos de escritura = Claude puede tumbar producción.** Usa MCPs de solo lectura para inspección. Si necesitas operaciones de escritura, ponlas detrás de un hook de confirmación.
+- **Los logs de producción pueden contener PII.** Al pasar logs al contexto de Claude, estás enviando esos datos a la API. Asegúrate de que cumples con tu política de datos.
+- **Timeout de 30s en la conexión MCP.** Si tu cluster K8s responde lento, el MCP se marca como failed. Configura retries o usa `--transport http` con un proxy que maneje timeouts.
+:::
 
 ## Seguridad y permisos
 
@@ -342,6 +366,10 @@ claude mcp serve
 Esto expone las herramientas nativas de Claude Code (Read, Edit, Bash, etc.) a otros IDEs o aplicaciones.
 
 ## Crear tu propio MCP server
+
+:::tip[¿Cuándo merece crear uno vs usar uno existente?]
+**Crea** si: tu servicio no tiene MCP oficial, necesitas lógica de negocio custom (no solo CRUD), o quieres controlar exactamente qué datos expones. **No crees** si: existe uno oficial o comunitario que cubre el 80% — mejor contribuye con un PR que mantener tu fork. **Regla de 5 minutos:** si puedes resolver el problema con un script de Bash que Claude ejecuta directamente, no necesitas un MCP server. Los MCPs brillan cuando la integración se usa repetidamente en múltiples sesiones.
+:::
 
 ### Los 10 SDKs oficiales
 

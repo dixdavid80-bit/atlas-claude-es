@@ -236,6 +236,21 @@ Para programmatic debugging: `client.beta.sessions.events.list(session.id)` devu
 
 **Tipos de evento:** `user.message`, `agent.message`, `agent.tool_use`, `agent.custom_tool_use`, `agent.mcp_tool_use`, `span.model_request_end`, `session.error`.
 
+## Errores comunes y trampas
+
+| Error | Por qué pasa | Solución |
+|---|---|---|
+| **Una sesión por usuario en vez de por hilo** | Parece lógico: un usuario = una sesión. Pero pierdes contexto entre conversaciones y acumulas estado basura | Patrón B: una sesión por hilo/request. Reutiliza solo dentro del mismo hilo |
+| **No archivar sesiones idle** | Las sesiones idle siguen consumiendo $0.08/hora. Con 100 usuarios, eso son $8/hora de nada | `archive` agresivo. Si lleva >10 min idle, archiva. Crea nueva si el usuario vuelve |
+| **Environment con `pip install` en cada sesión** | No creas Environment reutilizable. Cada sesión instala pandas, plotly, etc. → 30-60s de latencia por sesión | Crea el Environment una vez con tus dependencias. Reutilízalo siempre |
+| **Vault compartido entre clientes** | Un workspace con vaults de distintos clientes. Cualquier API key del workspace puede acceder a cualquier vault | Un workspace = un perímetro de confianza. Nunca mezcles clientes en el mismo workspace |
+| **Confiar en `thread_sessions` in-memory** | El dict se pierde si el proceso se reinicia. Pierdes el mapeo hilo→sesión y creas sesiones huérfanas | Persiste el mapeo en Redis/BD. Es lo primero que deberías externalizar del cookbook |
+| **Montar archivos grandes como prompt** | Pasas un CSV de 10MB como mensaje en vez de montarlo con Files API. Quema tokens y puede truncarse | Siempre Files API + `mount_path`. El archivo no consume tokens de contexto |
+
+:::tip[Managed Agents es infraestructura, no magia]
+El error más común es esperar que Managed Agents resuelva problemas de diseño del agente. Si tu agente funciona mal en local, funcionará mal en producción — pero más caro. Valida siempre con Agent SDK self-hosted antes de desplegar.
+:::
+
 ## Gaps conocidos del beta (abril 2026)
 
 | Gap | Impacto | Workaround |

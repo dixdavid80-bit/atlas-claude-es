@@ -357,17 +357,9 @@ Skill que delega validación completa al agente — investiga la app, navega com
 
 ## Auto Mode — permisos sin intervención
 
-Nuevo modo que permite ejecución prolongada sin interrupciones constantes de aprobación:
+Auto Mode es imprescindible para agentes paralelos y harness engineering — sin él, cada agente te interrumpe pidiendo permiso y rompe el flujo. El clasificador AI de 2 etapas decide qué es seguro sin tu intervención. Activar: `claude --enable-auto-mode` o Shift+Tab.
 
-| Modo | Cómo funciona |
-|---|---|
-| **Default** | Te pide permiso para cada acción sensible |
-| **Auto Mode** | Clasificador AI decide qué es seguro; solo pregunta lo dudoso |
-| **Plan Mode** | Claude planifica sin ejecutar hasta que apruebes |
-
-El clasificador usa pipeline de 2 etapas: etapa 1 (64 tokens, decisión rápida) → etapa 2 (4.096 tokens, razonamiento si la 1 bloquea).
-
-Activar: `claude --enable-auto-mode` o Shift+Tab en sesión.
+Para entender cómo funciona el clasificador por dentro (pipeline, patrones bloqueados, costes), ver [Tu primer proyecto → Auto Mode en detalle](/empezar/primer-proyecto/#auto-mode-en-detalle).
 
 ## Mejores prácticas para equipos
 

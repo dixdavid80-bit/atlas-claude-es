@@ -202,61 +202,86 @@ Escenarios: prompt del usuario, acciones de Claude, output esperado.
 Error → causa → solución.
 ```
 
-## Crear tu primera skill (sin herramientas)
+## Crear tu primera skill — de simple a completa
 
-No necesitas ningún script especial. Solo un archivo SKILL.md en la carpeta correcta:
+### Nivel 1: Solo SKILL.md (lo mínimo)
 
-**Paso 1** — Crea la carpeta:
+No necesitas ningún script. Solo un archivo:
+
 ```bash
 mkdir -p .claude/skills/email-profesional
 ```
 
-**Paso 2** — Crea el SKILL.md:
 ```markdown
 ---
 name: email-profesional
 description: >
-  Redacta emails profesionales en español B2B con tono formal pero cercano.
-  Use when user asks to write an email, draft a message, or compose a reply.
-metadata:
-  author: Tu Nombre
-  version: 1.0.0
-  category: business-process
+  Redacta emails profesionales en español B2B.
+  Use when user asks to write an email or draft a message.
 ---
 
-## Overview
-Genera emails profesionales en español B2B. Tono formal pero accesible.
-Siempre incluye asunto, saludo, cuerpo estructurado y cierre con acción.
-
 ## Instructions
-1. Identifica el destinatario y el objetivo del email
-2. Usa el tono adecuado al contexto (cliente nuevo vs. colega vs. proveedor)
-3. Estructura: asunto claro → contexto en 1 frase → petición/info → cierre con acción
-4. Si hay adjuntos, menciona siempre qué son y por qué se adjuntan
+1. Identifica destinatario y objetivo
+2. Estructura: asunto → contexto 1 frase → petición → cierre con acción
+3. Tono formal pero cercano. Máximo 3 líneas por párrafo
 
 ## Gotchas
-- No uses "Estimado/a" si el contexto es informal entre colegas
-- En español B2B, "un saludo" es más natural que "atentamente" para emails cortos
-- Si es primer contacto con un cliente, siempre incluir contexto de quién eres y por qué escribes
-- Evitar párrafos de más de 3 líneas — los emails largos no se leen
-
-## Examples
-**Prompt:** "escribe un email al cliente pidiendo feedback del taller"
-**Acción:** Lee el contexto del proyecto, identifica nombre del cliente si está disponible
-**Output:** asunto descriptivo + cuerpo de 4-5 líneas + cierre con llamada a la acción concreta
+- "Un saludo" > "Atentamente" para emails cortos en español B2B
+- Si es primer contacto, incluir quién eres y por qué escribes
 ```
 
-**Paso 3** — Úsala:
+Esto funciona. Claude lo recarga en vivo (file watcher). Pero es una skill plana — Claude reconstruye todo desde cero cada vez.
+
+### Nivel 2: Skill con assets (progressive disclosure real)
+
+La skill de verdad es una **carpeta**, no solo un markdown. Añade templates, scripts y datos para que Claude **componga** en vez de improvisar:
+
 ```
-/email-profesional redacta un email al equipo de marketing confirmando la fecha del taller
+.claude/skills/informe-semanal/
+├── SKILL.md              → Instrucciones + routing
+├── template.md           → Plantilla base del informe
+├── sections/
+│   ├── resumen-ejecutivo.md    → Estructura del resumen
+│   ├── metricas.md             → Qué métricas incluir y formato
+│   └── siguiente-semana.md     → Formato de próximos pasos
+├── scripts/
+│   └── fetch-metrics.sh        → Script que Claude ejecuta para obtener datos
+└── examples/
+    └── informe-ejemplo.md      → Un informe real como referencia
 ```
 
-**Paso 4** — Verifica que funciona:
-```
-/email-profesional test — genera un email de prueba para ver si el tono es correcto
+El SKILL.md de esta versión:
+
+```markdown
+---
+name: informe-semanal
+description: >
+  Genera informe semanal del proyecto con métricas, resumen ejecutivo y plan.
+  Use when user asks for weekly report, status update, or progress summary.
+---
+
+## Instructions
+1. Ejecuta `scripts/fetch-metrics.sh` para obtener datos actualizados
+2. Lee `template.md` como estructura base
+3. Rellena cada sección siguiendo la guía en `sections/`
+4. Consulta `examples/informe-ejemplo.md` como referencia de tono y extensión
+5. Genera el informe en `docs/informes/YYYY-MM-DD-semanal.md`
+
+## Gotchas
+- NO inventes métricas — si el script falla, indica que los datos no están disponibles
+- El resumen ejecutivo va PRIMERO y no supera 5 líneas
+- Las métricas llevan siempre comparación con semana anterior (↑/↓/→)
+- "Siguiente semana" son compromisos, no deseos. Máximo 5 items concretos
 ```
 
-Si algo no te convence, edita el SKILL.md y Claude lo recarga en vivo sin reiniciar sesión (gracias al file watcher).
+**La diferencia es enorme.** Con la skill plana, Claude improvisa el formato cada vez. Con la carpeta, Claude lee el template, ejecuta el script, rellena con datos reales y mantiene consistencia entre semanas. Eso es progressive disclosure aplicada a skills: Claude solo accede a lo que necesita en cada paso.
+
+### Úsala:
+```
+/informe-semanal genera el informe de esta semana
+```
+
+Si algo no te convence, edita los archivos de la carpeta. Claude recarga en vivo sin reiniciar sesión.
 
 ## Best practices oficiales de Anthropic
 
