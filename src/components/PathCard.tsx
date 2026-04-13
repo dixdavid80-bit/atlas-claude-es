@@ -80,7 +80,7 @@ export default function PathCard({
           fontWeight: 700,
           margin: 0,
           letterSpacing: '-0.01em',
-          color: 'var(--sl-color-black)',
+          color: 'var(--sl-color-white)',
         }}>
           {title}
         </h3>
