@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas Claude ES — Magazine</title>
+<meta name="description" content="La referencia completa del ecosistema Claude en español. Con criterio, con opinión, sin relleno.">
+<meta property="og:title" content="Atlas Claude ES — Magazine">
+<meta property="og:description" content="12 capítulos. 4.000+ líneas. La guía que faltaba sobre Claude en español.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --amber: #f59e0b;
+  --amber-dark: #b45309;
+  --amber-light: #fde68a;
+  --amber-bg: #451a03;
+  --stone-50: #fafaf9;
+  --stone-100: #f5f5f4;
+  --stone-200: #e7e5e4;
+  --stone-300: #d6d3d1;
+  --stone-400: #a8a29e;
+  --stone-500: #78716c;
+  --stone-600: #57534e;
+  --stone-700: #44403c;
+  --stone-800: #292524;
+  --stone-900: #1c1917;
+  --stone-950: #0c0a09;
+  --font-display: 'Libre Baskerville', Georgia, serif;
+  --font-body: 'Source Sans 3', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  overflow-x: auto;
+  overflow-y: hidden;
+  height: 100vh;
+  width: 100vw;
+  background: var(--stone-950);
+}
+
+.magazine {
+  display: flex;
+  height: 100vh;
+  scroll-snap-type: x mandatory;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scrollbar-width: none;
+}
+.magazine::-webkit-scrollbar { display: none; }
+
+.page {
+  flex: 0 0 100vw;
+  height: 100vh;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+}
+
+/* === NAV DOTS === */
+.nav-dots {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 100;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(12px);
+  padding: 8px 16px;
+  border-radius: 24px;
+}
+.nav-dots .dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--stone-500);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.nav-dots .dot.active {
+  background: var(--amber);
+  transform: scale(1.3);
+}
+
+/* === PAGE 1: COVER === */
+.page-cover {
+  background: var(--stone-950);
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0 12vw;
+}
+.page-cover::before {
+  content: '';
+  position: absolute;
+  top: -20%; right: -10%;
+  width: 70vh; height: 70vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
+}
+.page-cover .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--amber);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 2rem;
+}
+.page-cover h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 6rem);
+  color: var(--stone-50);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  max-width: 14ch;
+}
+.page-cover h1 em {
+  color: var(--amber);
+  font-style: normal;
+}
+.page-cover .subtitle {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  color: var(--stone-400);
+  max-width: 38ch;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  font-weight: 300;
+}
+.page-cover .author {
+  font-size: 0.95rem;
+  color: var(--stone-500);
+  font-weight: 500;
+}
+.page-cover .author span { color: var(--amber); }
+.page-cover .page-num {
+  position: absolute;
+  bottom: 40px; right: 60px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--stone-700);
+}
+
+/* === PAGE 2: PROBLEM === */
+.page-problem {
+  background: var(--stone-50);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.page-problem .left {
+  background: var(--amber);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8vh 6vw;
+}
+.page-problem .left h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 3.5rem);
+  color: var(--stone-950);
+  line-height: 1.15;
+  margin-bottom: 2rem;
+}
+.page-problem .left p {
+  font-size: 1.15rem;
+  color: var(--amber-bg);
+  line-height: 1.7;
+  max-width: 36ch;
+}
+.page-problem .right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8vh 5vw;
+  gap: 2rem;
+}
+.pain-point {
+  border-left: 3px solid var(--amber-dark);
+  padding-left: 1.5rem;
+}
+.pain-point h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--stone-900);
+  margin-bottom: 0.4rem;
+}
+.pain-point p {
+  font-size: 0.95rem;
+  color: var(--stone-600);
+  line-height: 1.6;
+}
+
+/* === PAGE 3: SOLUTION === */
+.page-solution {
+  background: var(--stone-900);
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 10vw;
+}
+.page-solution .label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--amber);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 1.5rem;
+}
+.page-solution h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--stone-50);
+  line-height: 1.2;
+  margin-bottom: 3rem;
+  max-width: 20ch;
+}
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+.step {
+  border-top: 2px solid var(--amber);
+  padding-top: 1.5rem;
+}
+.step .num {
+  font-family: var(--font-mono);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--amber);
+  margin-bottom: 0.5rem;
+}
+.step h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--stone-100);
+  margin-bottom: 0.5rem;
+}
+.step p {
+  font-size: 0.9rem;
+  color: var(--stone-400);
+  line-height: 1.5;
+}
+
+/* === PAGE 4: FEATURES === */
+.page-features {
+  background: var(--stone-100);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.feature-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5vh 4vw;
+}
+.feature-cell:nth-child(1) { background: var(--stone-900); }
+.feature-cell:nth-child(2) { background: var(--stone-800); }
+.feature-cell:nth-child(3) { background: var(--stone-800); }
+.feature-cell:nth-child(4) { background: var(--stone-900); }
+.feature-cell .stat {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 700;
+  color: var(--amber);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.feature-cell h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--stone-100);
+  margin-bottom: 0.5rem;
+}
+.feature-cell p {
+  font-size: 0.9rem;
+  color: var(--stone-400);
+  line-height: 1.5;
+  max-width: 32ch;
+}
+
+/* === PAGE 5: CHAPTERS === */
+.page-chapters {
+  background: var(--stone-50);
+  flex-direction: column;
+  justify-content: center;
+  padding: 6vh 8vw;
+}
+.page-chapters .label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--amber-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 1rem;
+}
+.page-chapters h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  color: var(--stone-900);
+  margin-bottom: 3rem;
+}
+.chapters-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+.chapter-card {
+  background: white;
+  border: 1px solid var(--stone-200);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.2s;
+}
+.chapter-card:hover {
+  border-color: var(--amber-dark);
+  transform: translateY(-2px);
+}
+.chapter-card .ch-num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--amber-dark);
+  margin-bottom: 0.5rem;
+}
+.chapter-card h4 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--stone-900);
+  margin-bottom: 0.3rem;
+}
+.chapter-card p {
+  font-size: 0.8rem;
+  color: var(--stone-500);
+  line-height: 1.4;
+}
+
+/* === PAGE 6: AUDIENCE === */
+.page-audience {
+  background: var(--amber-bg);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.page-audience .left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8vh 5vw;
+}
+.page-audience h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  color: var(--amber-light);
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+}
+.page-audience .left p {
+  font-size: 1.1rem;
+  color: var(--stone-300);
+  line-height: 1.7;
+  max-width: 36ch;
+}
+.page-audience .right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8vh 5vw;
+  gap: 2.5rem;
+}
+.persona {
+  border-left: 3px solid var(--amber);
+  padding-left: 1.5rem;
+}
+.persona h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--amber-light);
+  margin-bottom: 0.3rem;
+}
+.persona p {
+  font-size: 0.95rem;
+  color: var(--stone-400);
+  line-height: 1.5;
+}
+
+/* === PAGE 7: DIFFERENTIATOR === */
+.page-diff {
+  background: var(--stone-50);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.page-diff .col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8vh 5vw;
+}
+.page-diff .col:first-child {
+  background: var(--stone-200);
+}
+.page-diff .col h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+  color: var(--stone-900);
+  margin-bottom: 2rem;
+  line-height: 1.2;
+}
+.diff-item {
+  margin-bottom: 1.5rem;
+}
+.diff-item h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--stone-700);
+  margin-bottom: 0.25rem;
+}
+.diff-item p {
+  font-size: 0.9rem;
+  color: var(--stone-500);
+  line-height: 1.5;
+}
+.diff-item.atlas h4 { color: var(--amber-dark); }
+.diff-item.atlas p { color: var(--stone-700); }
+
+/* === PAGE 8: ORIGIN === */
+.page-origin {
+  background: var(--stone-900);
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 12vw;
+}
+.page-origin .quote {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  color: var(--stone-100);
+  line-height: 1.5;
+  font-style: italic;
+  max-width: 30ch;
+  margin-bottom: 2rem;
+  position: relative;
+  padding-left: 2rem;
+}
+.page-origin .quote::before {
+  content: '\201C';
+  position: absolute;
+  left: -1rem; top: -1rem;
+  font-size: 5rem;
+  color: var(--amber);
+  font-family: var(--font-display);
+  line-height: 1;
+}
+.page-origin .attribution {
+  font-size: 1rem;
+  color: var(--stone-400);
+  padding-left: 2rem;
+  margin-bottom: 3rem;
+}
+.page-origin .attribution span { color: var(--amber); font-weight: 600; }
+.page-origin .origin-text {
+  font-size: 1.05rem;
+  color: var(--stone-400);
+  line-height: 1.7;
+  max-width: 55ch;
+  padding-left: 2rem;
+  border-left: 2px solid var(--stone-700);
+}
+
+/* === PAGE 9: TECH === */
+.page-tech {
+  background: var(--stone-950);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.page-tech .left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8vh 5vw;
+  border-right: 1px solid var(--stone-800);
+}
+.page-tech h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  color: var(--stone-100);
+  margin-bottom: 2.5rem;
+}
+.tech-item {
+  margin-bottom: 1.8rem;
+}
+.tech-item h4 {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--amber);
+  margin-bottom: 0.3rem;
+}
+.tech-item p {
+  font-size: 0.9rem;
+  color: var(--stone-400);
+  line-height: 1.5;
+}
+.page-tech .right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8vh 5vw;
+}
+.page-tech .right h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--stone-200);
+  margin-bottom: 2rem;
+}
+.metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--stone-800);
+}
+.metric .label {
+  font-size: 0.95rem;
+  color: var(--stone-400);
+}
+.metric .value {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--amber);
+}
+
+/* === PAGE 10: BACK COVER === */
+.page-back {
+  background: var(--stone-950);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.page-back::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vh; height: 60vh;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 70%);
+}
+.page-back h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--stone-50);
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+.page-back h2 em {
+  color: var(--amber);
+  font-style: normal;
+}
+.page-back p {
+  font-size: 1.15rem;
+  color: var(--stone-400);
+  margin-bottom: 3rem;
+  max-width: 40ch;
+}
+.page-back .cta {
+  display: inline-block;
+  background: var(--amber);
+  color: var(--stone-950);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 1rem 2.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+  position: relative;
+}
+.page-back .cta:hover {
+  background: var(--amber-light);
+  transform: translateY(-2px);
+}
+.page-back .footer {
+  position: absolute;
+  bottom: 40px;
+  font-size: 0.85rem;
+  color: var(--stone-600);
+}
+.page-back .footer a {
+  color: var(--amber);
+  text-decoration: none;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .page-problem, .page-features, .page-audience, .page-diff, .page-tech {
+    grid-template-columns: 1fr;
+  }
+  .page-features { grid-template-rows: repeat(4, 1fr); }
+  .steps { grid-template-columns: repeat(2, 1fr); }
+  .chapters-grid { grid-template-columns: repeat(2, 1fr); }
+  .page-cover { padding: 0 8vw; }
+  .page-solution { padding: 0 6vw; }
+}
+
+/* === ANIMATIONS === */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.page > * {
+  animation: fadeUp 0.6s ease-out both;
+}
+</style>
+</head>
+<body>
+
+<div class="magazine" id="magazine">
+
+  <!-- PAGE 1: COVER -->
+  <section class="page page-cover">
+    <span class="eyebrow">La referencia en español</span>
+    <h1>Atlas <em>Claude</em> en Español</h1>
+    <p class="subtitle">12 capítulos. 4.000+ líneas. La guía del ecosistema Claude que faltaba — con criterio, con opinión, sin relleno.</p>
+    <p class="author">Por <span>David Dix</span> — actualizado continuamente</p>
+    <span class="page-num">01 / 10</span>
+  </section>
+
+  <!-- PAGE 2: PROBLEM -->
+  <section class="page page-problem">
+    <div class="left">
+      <h2>La documentación oficial es buena. Pero no es suficiente.</h2>
+      <p>Los docs de Anthropic explican el qué. No explican el cuándo, el por qué, ni el "esto es lo que yo haría".</p>
+    </div>
+    <div class="right">
+      <div class="pain-point">
+        <h3>Fragmentación</h3>
+        <p>La información está repartida entre docs, changelogs, tweets, y repos de GitHub. No hay una fuente que lo conecte todo.</p>
+      </div>
+      <div class="pain-point">
+        <h3>Sin opinión</h3>
+        <p>Los docs oficiales no te dicen qué merece tu tiempo y qué no. Te presentan 5 opciones sin recomendación.</p>
+      </div>
+      <div class="pain-point">
+        <h3>Solo en inglés</h3>
+        <p>El ecosistema Claude se mueve rápido y todo está en inglés. Si trabajas en español, llegas tarde o no llegas.</p>
+      </div>
+      <div class="pain-point">
+        <h3>Sin contexto B2B</h3>
+        <p>Los ejemplos son técnicos y genéricos. Nadie te dice cómo aplicar esto en un equipo real con problemas reales.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 3: SOLUTION -->
+  <section class="page page-solution">
+    <span class="label">La solución</span>
+    <h2>Conocimiento destilado, no documentación traducida.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="num">01</div>
+        <h3>Empezar</h3>
+        <p>Instalación, primer proyecto, configuración, prompting. De cero a productivo en una tarde.</p>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <h3>Automatizar</h3>
+        <p>Hooks determinísticos y skills reutilizables. Lo que debe pasar, pasa siempre.</p>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <h3>Escalar</h3>
+        <p>Agentes paralelos, modelos optimizados, workflows reales donde todo encaja.</p>
+      </div>
+      <div class="step">
+        <div class="num">04</div>
+        <h3>Producir</h3>
+        <p>API, Agent SDK, Managed Agents. De prototipo a deploy real con infraestructura gestionada.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 4: FEATURES -->
+  <section class="page page-features">
+    <div class="feature-cell">
+      <div class="stat">12</div>
+      <h3>Capítulos</h3>
+      <p>Del primer pip install hasta Managed Agents en producción. Progresión completa.</p>
+    </div>
+    <div class="feature-cell">
+      <div class="stat">4K+</div>
+      <h3>Líneas de contenido</h3>
+      <p>Con código ejecutable, tablas de decisión, gotchas reales y errores comunes.</p>
+    </div>
+    <div class="feature-cell">
+      <div class="stat">100%</div>
+      <h3>En español</h3>
+      <p>No es una traducción. Es contenido original escrito en español desde el principio.</p>
+    </div>
+    <div class="feature-cell">
+      <div class="stat">&infin;</div>
+      <h3>Actualizado</h3>
+      <p>Conectado con un hub de conocimiento que ingesta novedades del ecosistema continuamente.</p>
+    </div>
+  </section>
+
+  <!-- PAGE 5: CHAPTERS -->
+  <section class="page page-chapters">
+    <span class="label">Contenido</span>
+    <h2>12 capítulos, 5 secciones</h2>
+    <div class="chapters-grid">
+      <div class="chapter-card">
+        <div class="ch-num">CAP. 01</div>
+        <h4>Bienvenido al Atlas</h4>
+        <p>El mapa del ecosistema Claude completo</p>
+      </div>
+      <div class="chapter-card">
+        <div class="ch-num">CAP. 02</div>
+        <h4>Tu primer proyecto</h4>
+        <p>De instalar a producir en una tarde</p>
+      </div>
+      <div class="chapter-card">
+        <div class="ch-num">CAP. 03</div>
+        <h4>Configuración</h4>
+        <p>CLAUDE.md, memoria, jerarquía de 6 niveles</p>
+      </div>
+      <div class="chapter-card">
+        <div class="ch-num">CAP. 04</div>
+        <h4>Prompting</h4>
+        <p>7 técnicas + adaptive thinking + effort</p>
+      </div>
+      <div class="chapter-card">
+        <div class="ch-num">CAP. 05</div>
+        <h4>Hooks</h4>
+        <p>Automatización determinística que no falla</p>
+      </div>
+      <div class="chapter-card">
+        <div class="ch-num">CAP. 06</div>
+        <h4>Skills</h4>
+        <p>Workflows encapsulados y reutilizables</p>
+      </div>
+      <div class="chapter-card">
+        <div class="ch-num">CAP. 07</div>
+        <h4>MCP</h4>
+        <p>Conectar con GitHub, BDs, Slack, Drive</p>
+      </div>
+      <div class="chapter-card">
+        <div class="ch-num">CAP. 08</div>
+        <h4>Agentes</h4>
+        <p>Subagentes paralelos y harness engineering</p>
+      </div>
+      <div class="chapter-card">
+        <div class="ch-num">CAP. 09</div>
+        <h4>Modelos y coste</h4>
+        <p>Aritmética real y optimización de tokens</p>
+      </div>
+      <div class="chapter-card">
+        <div class="ch-num">CAP. 10</div>
+        <h4>Workflows reales</h4>
+        <p>3 casos B2B donde todo encaja</p>
+      </div>
+      <div class="chapter-card">
+        <div class="ch-num">CAP. 11</div>
+        <h4>API y Agent SDK</h4>
+        <p>Agentes programáticos + Advisor tool</p>
+      </div>
+      <div class="chapter-card">
+        <div class="ch-num">CAP. 12</div>
+        <h4>Managed Agents</h4>
+        <p>De prototipo a deploy en producción</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 6: AUDIENCE -->
+  <section class="page page-audience">
+    <div class="left">
+      <h2>Para quien quiere entender, no solo usar.</h2>
+      <p>Si buscas respuestas rápidas, los docs oficiales son más directos. Si buscas entender de verdad, estás en el sitio correcto.</p>
+    </div>
+    <div class="right">
+      <div class="persona">
+        <h3>Desarrolladores</h3>
+        <p>Que usan o quieren usar Claude Code como su herramienta principal de desarrollo.</p>
+      </div>
+      <div class="persona">
+        <h3>Technical leads</h3>
+        <p>Que necesitan decidir si y cómo integrar Claude en los workflows de su equipo.</p>
+      </div>
+      <div class="persona">
+        <h3>Perfiles de negocio</h3>
+        <p>Con curiosidad técnica que quieren entender qué puede hacer Claude sin depender de un developer.</p>
+      </div>
+      <div class="persona">
+        <h3>Formadores</h3>
+        <p>Que necesitan material actualizado y estructurado sobre el ecosistema Claude en español.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 7: DIFFERENTIATOR -->
+  <section class="page page-diff">
+    <div class="col">
+      <h2>Documentación oficial</h2>
+      <div class="diff-item">
+        <h4>Explica el qué</h4>
+        <p>"Hooks son scripts que se ejecutan antes o después de acciones de Claude."</p>
+      </div>
+      <div class="diff-item">
+        <h4>Sin opinión</h4>
+        <p>Te presenta 5 opciones. Tú decides cuál usar.</p>
+      </div>
+      <div class="diff-item">
+        <h4>Sin contexto</h4>
+        <p>Ejemplos genéricos desconectados de problemas reales.</p>
+      </div>
+      <div class="diff-item">
+        <h4>En inglés</h4>
+        <p>Solo disponible en inglés. Sin alternativa oficial.</p>
+      </div>
+    </div>
+    <div class="col">
+      <h2>Atlas Claude ES</h2>
+      <div class="diff-item atlas">
+        <h4>Explica el por qué y el cuándo</h4>
+        <p>"Usa hooks cuando necesites que algo pase siempre. Si puede fallar, no es un hook."</p>
+      </div>
+      <div class="diff-item atlas">
+        <h4>Con criterio</h4>
+        <p>Te recomiendo una opción y te digo por qué. Si no me gusta algo, lo digo.</p>
+      </div>
+      <div class="diff-item atlas">
+        <h4>Con workflows reales</h4>
+        <p>3 casos B2B completos donde hooks, skills, MCP y agentes trabajan juntos.</p>
+      </div>
+      <div class="diff-item atlas">
+        <h4>En español nativo</h4>
+        <p>Escrito en español desde el principio. No traducido. Con voz propia.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAGE 8: ORIGIN STORY -->
+  <section class="page page-origin">
+    <p class="quote">La inteligencia real no es acumular información. Es saber conectarla, destilarla, y transmitirla con claridad.</p>
+    <p class="attribution"><span>David Dix</span> — Atlas Claude ES</p>
+    <p class="origin-text">Este Atlas nace de meses trabajando con el ecosistema Claude a diario. No es un proyecto de fin de semana ni una traducción de docs. Es conocimiento destilado con criterio propio, después de probar cada feature, romper cosas, y descubrir qué funciona de verdad y qué es ruido. Cada capítulo tiene opinión. Tiene recomendación. Tiene un "esto es lo que yo haría y por qué".</p>
+  </section>
+
+  <!-- PAGE 9: TECH -->
+  <section class="page page-tech">
+    <div class="left">
+      <h2>Construido con el propio ecosistema que documenta</h2>
+      <div class="tech-item">
+        <h4>Astro + Starlight</h4>
+        <p>Framework de documentación con SSG, búsqueda integrada y navegación automática.</p>
+      </div>
+      <div class="tech-item">
+        <h4>React + Tailwind CSS</h4>
+        <p>Componentes interactivos con islands architecture para rendimiento óptimo.</p>
+      </div>
+      <div class="tech-item">
+        <h4>Vercel</h4>
+        <p>Deploy automático en cada push a main. De commit a producción en segundos.</p>
+      </div>
+      <div class="tech-item">
+        <h4>Claude Code</h4>
+        <p>Los 12 capítulos, el diseño y esta magazine se escribieron con Claude Code.</p>
+      </div>
+    </div>
+    <div class="right">
+      <h3>En números</h3>
+      <div class="metric"><span class="label">Capítulos</span><span class="value">12</span></div>
+      <div class="metric"><span class="label">Líneas de contenido</span><span class="value">4.300+</span></div>
+      <div class="metric"><span class="label">Ejemplos de código</span><span class="value">50+</span></div>
+      <div class="metric"><span class="label">Tablas de decisión</span><span class="value">30+</span></div>
+      <div class="metric"><span class="label">Errores documentados</span><span class="value">40+</span></div>
+      <div class="metric"><span class="label">Idioma</span><span class="value">ES</span></div>
+    </div>
+  </section>
+
+  <!-- PAGE 10: BACK COVER -->
+  <section class="page page-back">
+    <h2>Empieza a<br>entender <em>Claude</em></h2>
+    <p>12 capítulos gratuitos. Actualizados continuamente. En español.</p>
+    <a href="https://atlas-claude-es.vercel.app" class="cta">Leer el Atlas</a>
+    <p class="footer">Escrito por <a href="https://github.com/dixdavid80-bit">David Dix</a> — <a href="https://github.com/dixdavid80-bit/atlas-claude-es">GitHub</a></p>
+  </section>
+
+</div>
+
+<!-- NAV DOTS -->
+<div class="nav-dots" id="navDots"></div>
+
+<script>
+const magazine = document.getElementById('magazine');
+const pages = document.querySelectorAll('.page');
+const navDots = document.getElementById('navDots');
+
+// Create dots
+pages.forEach((_, i) => {
+  const dot = document.createElement('button');
+  dot.className = 'dot' + (i === 0 ? ' active' : '');
+  dot.setAttribute('aria-label', `Page ${i + 1}`);
+  dot.onclick = () => {
+    pages[i].scrollIntoView({ behavior: 'smooth', inline: 'start' });
+  };
+  navDots.appendChild(dot);
+});
+
+// Update active dot on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const index = Array.from(pages).indexOf(entry.target);
+      document.querySelectorAll('.dot').forEach((d, i) => {
+        d.classList.toggle('active', i === index);
+      });
+    }
+  });
+}, { root: magazine, threshold: 0.6 });
+
+pages.forEach(page => observer.observe(page));
+
+// Arrow key navigation
+let currentPage = 0;
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' && currentPage < pages.length - 1) {
+    currentPage++;
+    pages[currentPage].scrollIntoView({ behavior: 'smooth', inline: 'start' });
+  } else if (e.key === 'ArrowLeft' && currentPage > 0) {
+    currentPage--;
+    pages[currentPage].scrollIntoView({ behavior: 'smooth', inline: 'start' });
+  }
+});
+
+// Sync currentPage with scroll
+magazine.addEventListener('scroll', () => {
+  const scrollLeft = magazine.scrollLeft;
+  currentPage = Math.round(scrollLeft / window.innerWidth);
+});
+</script>
+</body>
+</html>
